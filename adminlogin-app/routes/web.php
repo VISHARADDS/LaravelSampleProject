@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminUserController;
 
 Route::get('/', function () {
-    return view('layout');
+    return view('loginRegister');
     
 });
 
