@@ -7,9 +7,40 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 use App\Models\AdminUser;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Session;
 
 class AdminUserController extends Controller
 {
+
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            // Authentication passed...
+            return redirect()->intended('/adminUser')->with('success', 'Login successful!');
+        } else {
+            // Authentication failed...
+            return redirect()->back()->withErrors(['error' => 'Invalid email or password.']);
+        }
+    }
+
+    public function showLoginForm()
+    {
+        return view('adminUser.create');
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -24,17 +55,40 @@ class AdminUserController extends Controller
      */
     public function create()
     {
-        //
+        return view ('adminUser.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function store(Request $request): RedirectResponse
+{
+    $validatedData = $request->validate([
+        'email' => 'required|string|email|max:255|unique:admin_users',
+        'password' => 'required|string|min:8|confirmed',
+        'name' => 'required|string|max:255',
+    ]);
 
+    // Hash the password only once
+    $hashedPassword = Hash::make($validatedData['password']);
+
+    $adminUser = AdminUser::create([
+        'email' => $validatedData['email'],
+        'password' => $validatedData['password'],
+        'name' => $validatedData['name'],
+        'dob' => '', // default date
+        'nic' => '', // default empty value
+        'mobile' => '', // default empty value
+    ]);
+
+    if ($adminUser) {
+        \Log::info('User added to database: ' . $adminUser->email);
+        return redirect('register')->with('success', 'User added successfully!');
+    } else {
+        \Log::error('Error adding user to database');
+        return redirect()->back()->withInput()->withErrors(['error' => 'Failed to add user. Please try again.']);
+    }
+}
     /**
      * Display the specified resource.
      */
