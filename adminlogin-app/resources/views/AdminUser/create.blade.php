@@ -12,20 +12,30 @@
     <link rel="stylesheet" href="{{ asset('css/login.css') }}"/>
 </head>
 <body>
+@if(Session::has('success'))
+        <div class="alert alert-success">
+            {{ Session::get('success') }}
+        </div>
+    @endif
+
     <div class="form-container">
         <div class="login-container" id="login-container">
             <h1 class="title">Log In</h1>
             <p class="desc">Login to your account to upload or download pictures, videos, or music</p>
+            <form method="POST" action="{{ route('login.submit') }}">
+            @csrf
             <div class="input-container">
-                <input type="email" placeholder="Enter Your Email Address" autofocus>
+                <input type="email" name="email" placeholder="Enter Your Email Address" autofocus>
             </div>
             <div class="input-container">
-                <input type="password" placeholder="Enter Your Password">
+                <input type="password" name="password" placeholder="Enter Your Password">
             </div>
+            <br>
             <div class="account-controls">
                 <a href="">Forgot Password?</a>
-                <button>Next <i class="fas fa-solid fa-angle-right"></i></button>
+                <button type="submit">Next <i class="fas fa-solid fa-angle-right"></i></button>
             </div>
+            </form>
             <span class="line"></span>
             <span class="other-login-text">Or log in with</span>
             <div class="social-logins">
@@ -98,6 +108,7 @@
         alert('{{ session('success') }}');
         window.location.reload();
     @endif
+    
 </script>
 </body>
 </html>
