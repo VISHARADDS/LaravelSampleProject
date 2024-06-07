@@ -12,18 +12,13 @@
     <link rel="stylesheet" href="{{ asset('css/login.css') }}"/>
 </head>
 <body>
-@if(Session::has('success'))
-        <div class="alert alert-success">
-            {{ Session::get('success') }}
-        </div>
-    @endif
 
     <div class="form-container">
         <div class="login-container" id="login-container">
             <h1 class="title">Log In</h1>
             <p class="desc">Login to your account to upload or download pictures, videos, or music</p>
-            <form method="POST" action="{{ route('login.submit') }}">
-            @csrf
+            <form>
+            
             <div class="input-container">
                 <input type="email" name="email" placeholder="Enter Your Email Address" autofocus>
             </div>

@@ -7,19 +7,17 @@ Route::get('/', function () {
     return view('loginRegister');
 });
 
-// Route::resource('adminUser', AdminUserController::class);
+Route::resource('adminUser', AdminUserController::class);
 
-Route::group(['middleware' => 'auth'], function () {
-    Route::get('/adminUser', function () {
-        return view('adminUser');
-    });
-});
+// Route::group(['middleware' => 'auth'], function () {
+//     Route::get('/adminUser', function () {
+//         return view('adminUser');
+//     });
+// });
 
 
 
-// Login routes
-Route::get('/login', [AdminUserController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AdminUserController::class, 'login'])->name('login.submit');
+
 
 
 // Registration routes
