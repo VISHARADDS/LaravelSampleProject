@@ -10,7 +10,8 @@ Route::get('/', function () {
 
 Route::resource('adminUser', AdminUserController::class);
 
-
+Route::get('/register', [AdminUserController::class, 'create'])->name('register');
+Route::post('/register', [AdminUserController::class, 'store'])->name('register.store');
     
 
 

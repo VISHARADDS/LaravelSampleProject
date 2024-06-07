@@ -43,18 +43,26 @@
         <div class="signup-container" id="signup-container">
             <h1 class="title">Signup</h1>
             <p class="desc">Create your account to explore the website</p>
+            <form action="{{ route('register.store') }}" method="post">
+            @csrf
             <div class="input-container">
-                <input type="email" placeholder="Enter Your Email Address">
+                <input type="text" name="name" id="name" placeholder="Enter Your Full Name">
             </div>
             <div class="input-container">
-                <input type="password" placeholder="Enter Your Password">
+                <input type="email" name="email" id="email" placeholder="Enter Your Email Address">
             </div>
             <div class="input-container">
-                <input type="password" placeholder="Re-type Your Password">
+                <input name="password" name="password" type="password" placeholder="Enter Your Password">
             </div>
+            <div class="input-container">
+                <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Re-type Your Password" required minlength="8">
+            </div>
+            <br>
             <div class="account-controls">
-                <button>Next <i class="fas fa-solid fa-angle-right"></i></button>
+              <button type="submit">Next <i class="fas fa-solid fa-angle-right"></i></button>
             </div>
+          
+</form>
             <span class="line"></span>
             <span class="other-login-text">Or Signup with</span>
             <div class="social-logins">
@@ -85,5 +93,11 @@
             loginContainer.style.transform = "scale(1)";
         });
     </script>
+    <script>
+    // Check for errors in the response
+    @if($errors->any())
+        alert("{{ $errors->first() }}");
+    @endif
+</script>
 </body>
 </html>
