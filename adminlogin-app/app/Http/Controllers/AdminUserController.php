@@ -3,15 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
+use App\Models\AdminUser;
 
 class AdminUserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
-        //
+       $adminUser = AdminUser::all();
+       return view ('adminUser.index')->with('adminUser', $adminUser);
     }
 
     /**
