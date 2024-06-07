@@ -7,7 +7,7 @@ Route::get('/', function () {
     return view('loginRegister');
 });
 
-Route::resource('adminUser', AdminUserController::class);
+// Route::resource('adminUser', AdminUserController::class);
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/adminUser', function () {
