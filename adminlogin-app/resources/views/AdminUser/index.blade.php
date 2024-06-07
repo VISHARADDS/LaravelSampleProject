@@ -239,7 +239,7 @@
         .then(response => {
             if (response.ok) {
                 console.log('User deleted successfully!');
-                window.location.reload();
+                window.location.href = '/adminUser';
             } else {
                 console.error('Failed to delete user.');
                 return response.json().then(data => {
@@ -253,6 +253,7 @@
         .finally(() => {
             // Close the modal regardless of the outcome
             deleteConfirmationModal.hide();
+            window.location.href = '/adminUser';
         });
     });
 </script>
