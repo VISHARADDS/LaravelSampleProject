@@ -16,6 +16,32 @@ use Illuminate\Validation\ValidationException;
 class AdminUserController extends Controller
 {
 
+
+
+    public function login(Request $request): RedirectResponse
+    {
+        $credentials = $request->validate([
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:8',
+        ]);
+
+        $adminUser = AdminUser::where('email', $credentials['email'])->first();
+
+        if ($adminUser && $credentials['password'] === $adminUser->password) {
+            // Assuming you want to set some session or authentication here
+            // For example:
+            // session(['admin_user' => $adminUser->id]);
+
+            Log::info('User logged in: ' . $adminUser->email);
+            return redirect('/adminUser')->with('success', 'Logged in successfully!');
+        } else {
+            return redirect()->back()->withErrors(['error' => 'Invalid email or password.']);
+        }
+    }
+
+
+
+
     /**
      * Display a listing of the resource.
      */
@@ -56,7 +82,7 @@ class AdminUserController extends Controller
 
     if ($adminUser) {
         \Log::info('User added to database: ' . $adminUser->email);
-        return redirect('register')->with('success', 'User added successfully!');
+        return redirect('/login/register')->with('success', 'User added successfully!');
     } else {
         \Log::error('Error adding user to database');
         return redirect()->back()->withInput()->withErrors(['error' => 'Failed to add user. Please try again.']);

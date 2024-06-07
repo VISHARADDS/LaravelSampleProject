@@ -17,19 +17,19 @@
         <div class="login-container" id="login-container">
             <h1 class="title">Log In</h1>
             <p class="desc">Login to your account to upload or download pictures, videos, or music</p>
-            <form>
-            
-            <div class="input-container">
-                <input type="email" name="email" placeholder="Enter Your Email Address" autofocus>
-            </div>
-            <div class="input-container">
-                <input type="password" name="password" placeholder="Enter Your Password">
-            </div>
-            <br>
-            <div class="account-controls">
-                <a href="">Forgot Password?</a>
-                <button type="submit">Next <i class="fas fa-solid fa-angle-right"></i></button>
-            </div>
+            <form action="{{ route('login') }}" method="post">
+            @csrf
+                <div class="input-container">
+                    <input type="email" name="email" placeholder="Enter Your Email Address" autofocus required>
+                </div>
+                <div class="input-container">
+                    <input type="password" name="password" placeholder="Enter Your Password" required>
+                </div>
+                <br>
+                <div class="account-controls">
+                    <a href="">Forgot Password?</a>
+                    <button type="submit">Next <i class="fas fa-solid fa-angle-right"></i></button>
+                </div>
             </form>
             <span class="line"></span>
             <span class="other-login-text">Or log in with</span>
@@ -97,6 +97,9 @@
             signupContainer.style.transform = "scale(0)";
             loginContainer.style.transform = "scale(1)";
         });
+        @if($errors->any())
+            alert('{{ $errors->first() }}');
+        @endif
     </script>
    <script>
     @if(session('success'))
