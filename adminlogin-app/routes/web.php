@@ -21,5 +21,3 @@ Route::get('/login/register', [AdminUserController::class, 'create'])->name('reg
 Route::post('/login/register', [AdminUserController::class, 'store'])->name('register.store');
 
 //delete
-Route::resource('adminUser', AdminUserController::class);
-Route::delete('/adminUser/{id}', [AdminUserController::class, 'destroy'])->name('adminUser.destroy');
