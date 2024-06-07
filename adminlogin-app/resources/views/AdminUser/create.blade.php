@@ -93,10 +93,10 @@
             loginContainer.style.transform = "scale(1)";
         });
     </script>
-    <script>
-    // Check for errors in the response
-    @if($errors->any())
-        alert("{{ $errors->first() }}");
+   <script>
+    @if(session('success'))
+        alert('{{ session('success') }}');
+        window.location.reload();
     @endif
 </script>
 </body>

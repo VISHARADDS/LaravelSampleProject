@@ -55,7 +55,7 @@ class AdminUserController extends Controller
 
     if ($adminUser) {
         \Log::info('User added to database: ' . $adminUser->email);
-        return redirect('adminUser')->with('flash_message', 'User Added!');
+        return redirect('register')->with('success', 'User added successfully!');
     } else {
         \Log::error('Error adding user to database');
         return redirect()->back()->withInput()->withErrors(['error' => 'Failed to add user. Please try again.']);
