@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Admin Users</title>
 
     <!-- CSS Files -->
    
@@ -18,7 +18,7 @@
             <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
             <a class="navbar-brand m-0" href="/dashboard">
                 <div style="display:flex">
-                    <img src="" class="navbar-brand-img" alt="main_logo"/>
+                    <img src="{{ asset('images/logo.png') }}" class="navbar-brand-img" alt="main_logo"/>
                     <span class="ms-2 font-weight-bold text-white" style="margin-top:10px">MAZZA GALLERIE</span>
                 </div>
             </a>
@@ -114,7 +114,7 @@
                                         <th style="color:black" class="text-uppercase text-sm opacity-7 ps-2">Email</th>
                                         <th style="color:black" class="text-uppercase text-sm opacity-7 ps-2">NIC</th>
                                         <th style="color:black" class="text-uppercase text-sm opacity-7 ps-2">DOB</th>
-                                        <th style="color:black" class="text-uppercase text-sm opacity-7 ps-2">Updated Time</th>
+                                        <th style="color:black" class="text-uppercase text-sm opacity-7 ps-2">Mobile</th>
                                         <th class="text-secondary opacity-7"></th>
                                     </tr>
                                 </thead>
