@@ -5,7 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Users</title>
 
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- CSS Files -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
    
     <link rel="stylesheet" href="{{ asset('css/headerUI.css') }}"/>
    
@@ -109,6 +116,7 @@
                             <table class="table align-items-center mb-0 align-items-center table-flush" responsive="true">
                                 <thead>
                                     <tr>
+                                       
                                         <th style="color:black" class="text-uppercase text-sm opacity-7 ps-3">USER ID</th>
                                         <th style="color:black" class="text-uppercase text-sm opacity-7 ps-2">Name</th>
                                         <th style="color:black" class="text-uppercase text-sm opacity-7 ps-2">Email</th>
@@ -121,11 +129,12 @@
                                 </thead>
                                 <tbody>
                                    @foreach($adminUser as $item)
-                                    <tr>
+                                   <tr data-user-id="{{ $item->id }}">
+                                  
                                         <td>
                                             <div class="px-2 py-1">
                                                 <div>
-                                                    <p style="font-size:14px" class="font-weight-bold mb-0">{{ $loop->iteration }}</p>
+                                                    <p style="font-size:14px" class="font-weight-bold mb-0">{{ $item->id }}</p>
                                                 </div>
                                             </div>
                                         </td>
@@ -155,11 +164,12 @@
                                                     </button>
                                                 </div>
                                                 <div style="margin-left: 10px; display: flex; align-items: center">
-                                                    <button style="width: 40px; height: 40px" type="button" class="btn btn-danger d-flex justify-content-center align-items-center">
+                                                    <button style="width: 40px; height: 40px" type="button" class="btn btn-danger d-flex justify-content-center align-items-center delete-user-button">
                                                         <i class="material-icons opacity-10">delete</i>
                                                     </button>
                                                 </div>
-                                                <div style="margin-left: 10px; display: flex; align-items: center">
+                                            
+                                                 <div style="margin-left: 10px; display: flex; align-items: center">
                                                     <button style="width: 40px; height: 40px" type="button" class="btn btn-info d-flex justify-content-center align-items-center">
                                                         <i class="material-icons opacity-10">download</i>
                                                     </button>
@@ -179,6 +189,74 @@
     </div>
 </main> 
 </div>
+<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmationModalLabel">Delete Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete user with ID: <span id="userId"></span>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // Get the delete button and modal elements
+    const deleteButtons = document.querySelectorAll('.delete-user-button');
+    const deleteConfirmationModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
+    const userIdSpan = document.getElementById('userId');
+
+    // Add click event listener to each delete button
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            deleteConfirmationModal.show();
+            const userId = button.closest('tr').getAttribute('data-user-id'); // Retrieve user ID from the closest table row
+            console.log('Fetched User ID:', userId);
+            userIdSpan.textContent = userId;
+            // Store the user ID in a data attribute of the modal delete button for later use
+            document.getElementById('confirmDeleteButton').setAttribute('data-user-id', userId);
+        });
+    });
+
+    // Add click event listener to the confirm delete button in the modal
+    document.getElementById('confirmDeleteButton').addEventListener('click', () => {
+        // Retrieve the user ID stored in the data attribute
+        const userId = document.getElementById('confirmDeleteButton').getAttribute('data-user-id');
+        // Send an AJAX request to delete the user
+        fetch(`/adminUser/${userId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}', // Include CSRF token if using Laravel's CSRF protection
+                'Content-Type': 'application/json'
+            },
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('User deleted successfully!');
+                window.location.reload();
+            } else {
+                console.error('Failed to delete user.');
+                return response.json().then(data => {
+                    throw new Error(data.error);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error occurred while deleting user:', error);
+        })
+        .finally(() => {
+            // Close the modal regardless of the outcome
+            deleteConfirmationModal.hide();
+        });
+    });
+</script>
+
 
 </body>
 </html>

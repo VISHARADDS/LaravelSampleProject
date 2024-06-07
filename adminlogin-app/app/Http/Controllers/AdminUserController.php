@@ -115,8 +115,22 @@ class AdminUserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy(string $id): RedirectResponse
+{
+
+    $adminUser = AdminUser::find($id);
+
+
+    // Check if the user exists
+    if (!$adminUser) {
+        // Redirect back with error message if user not found
+        return redirect()->back()->withErrors(['error' => 'User not found.']);
     }
+
+    // Delete the user
+    $adminUser->delete();
+
+    // Redirect back with success message
+    return redirect()->back()->with('success', 'User deleted successfully!');
+}
 }
