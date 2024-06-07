@@ -10,36 +10,37 @@ use App\Models\AdminUser;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Session;
+
 
 class AdminUserController extends Controller
 {
 
 
-    public function login(Request $request)
+
+    public function login(Request $request): RedirectResponse
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+        $credentials = $request->validate([
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:8',
         ]);
 
-        $credentials = $request->only('email', 'password');
+        $adminUser = AdminUser::where('email', $credentials['email'])->first();
 
-        if (Auth::attempt($credentials)) {
-            // Authentication passed...
-            return redirect()->intended('/adminUser')->with('success', 'Login successful!');
+        if ($adminUser && $credentials['password'] === $adminUser->password) {
+            // Assuming you want to set some session or authentication here
+            // For example:
+            // session(['admin_user' => $adminUser->id]);
+
+            Log::info('User logged in: ' . $adminUser->email);
+            return redirect('/adminUser')->with('success', 'Logged in successfully!');
         } else {
-            // Authentication failed...
             return redirect()->back()->withErrors(['error' => 'Invalid email or password.']);
         }
     }
 
-    public function showLoginForm()
-    {
-        return view('adminUser.create');
-    }
+
+
 
     /**
      * Display a listing of the resource.
@@ -69,8 +70,6 @@ class AdminUserController extends Controller
         'name' => 'required|string|max:255',
     ]);
 
-    // Hash the password only once
-    $hashedPassword = Hash::make($validatedData['password']);
 
     $adminUser = AdminUser::create([
         'email' => $validatedData['email'],
@@ -83,7 +82,7 @@ class AdminUserController extends Controller
 
     if ($adminUser) {
         \Log::info('User added to database: ' . $adminUser->email);
-        return redirect('register')->with('success', 'User added successfully!');
+        return redirect('/login/register')->with('success', 'User added successfully!');
     } else {
         \Log::error('Error adding user to database');
         return redirect()->back()->withInput()->withErrors(['error' => 'Failed to add user. Please try again.']);
@@ -116,8 +115,22 @@ class AdminUserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy(string $id): RedirectResponse
+{
+
+    $adminUser = AdminUser::find($id);
+
+
+    // Check if the user exists
+    if (!$adminUser) {
+        // Redirect back with error message if user not found
+        return redirect()->back()->withErrors(['error' => 'User not found.']);
     }
+
+    // Delete the user
+    $adminUser->delete();
+
+    // Redirect back with success message
+    return redirect()->back()->with('success', 'User deleted successfully!');
+}
 }
