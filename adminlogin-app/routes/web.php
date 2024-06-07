@@ -8,8 +8,9 @@ Route::get('/', function () {
     
 });
 
-Route::resource('/adminUser', AdminUserController::class);
-  
+Route::resource('adminUser', AdminUserController::class);
+
+
     
 
 

@@ -145,7 +145,7 @@
                                             <p style="font-size:14px" class="font-weight-bold mb-0">{{ $item->mobile }}</p>
                                         </td>
                                         <td class="align-justify text-justify text-sm">
-                                            <p style="font-size:14px" class="font-weight-bold mb-0">{{ $item->updated_at }}</p>
+                                            <p style="font-size:14px" class="font-weight-bold mb-0">{{ $item->updated }}</p>
                                         </td>
                                         <td>
                                             <div style="display: flex">
