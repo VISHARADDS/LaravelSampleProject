@@ -114,7 +114,7 @@
                                         <th style="color:black" class="text-uppercase text-sm opacity-7 ps-2">Email</th>
                                         <th style="color:black" class="text-uppercase text-sm opacity-7 ps-2">NIC</th>
                                         <th style="color:black" class="text-uppercase text-sm opacity-7 ps-2">DOB</th>
-                                        <th style="color:black" class="text-uppercase text-sm opacity-7 ps-2">Updated Time</th>
+                                        <th style="color:black" class="text-uppercase text-sm opacity-7 ps-2">Mobile</th>
                                         <th class="text-secondary opacity-7"></th>
                                     </tr>
                                 </thead>
