@@ -10,14 +10,9 @@ use App\Http\Controllers\AdminUserController;
 Route::resource('adminUser', AdminUserController::class);
 Route::post('/login', [AdminUserController::class, 'login'])->name('login');
 
-// Route::group(['middleware' => 'auth'], function () {
-//     Route::get('/adminUser', function () {
-//         return view('adminUser');
-//     });
-// });
 
 // Registration routes
 Route::get('/login/register', [AdminUserController::class, 'create'])->name('register');
 Route::post('/login/register', [AdminUserController::class, 'store'])->name('register.store');
 
-//delete
+
